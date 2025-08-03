@@ -45,5 +45,16 @@ class App:
         self.btn = tk.Button(root, text="🎲 Seleziona", command=self.start_animation) # Pulsante per avviare
         self.btn.pack(pady=10) # Aggiungo il pulsante per avviare la selezione)
 
+    # creo una funzione per avviare l'animazione
+    def start_animation(self):
+        if self.running:
+            return # evita di eseguire più volte l'animazione
+        self.running = True # Inizio l'animazione
+        self.delay = 100 # ritardo
+        self.sequence = self.generate_sequence() # Genero la sequenza di indici
+        self.animate() # Avvio l'animazione
+
+
+
 
     
