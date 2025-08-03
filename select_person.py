@@ -60,6 +60,33 @@ class App:
         turns = random.randint(30, 50)
         return [i for i in range(turns)] # Restituisce una lista di indici da 0 a turns-1
     
+    # creo una fuunzione per animare la selezione
+    def animate(self):
+        tot_cells = ROWS * COLUMNS # Calcolo il numero totale di celle
+        index = self.index_list % tot_cells # Calcolo l'indice corrente
+        row = index // COLUMNS # Calcolo la riga corrente
+        col = index % COLUMNS # Calcolo la colonna corrente
+
+        # resetto i colori delle etichette
+        for r in self.labels:
+            for lbl in r:
+                lbl.config(bg="lightblue") # colore di sfondo predefinito
+
+            # evidenzio la cella corrente
+            self.labels[row][col].config(bg="yellow") # colore di sfondo giallo per la cella corrente
+            self.index_list += 1 # Incremento l'indice per la prossima cella
+            self.delay += 15 # Rallenta progressivamente l'animazione
+
+            if self.delay > 400:
+                # fermo l'animazione
+                self.labels[row][col].config(bg="green") # colore di sfondo verde per la cella finale
+                self.running = False # l'animazione si ferma
+            else:
+                self.root.after(self.delay, self.animate) # Chiamo la funzione animate dopo il ritardo specificato
+
+root = tk.Tk() # Creo la finestra principale
+app = App(root) # Inizializzo l'applicazione
+root.mainloop() # Avvio l'applicazione
 
 
     
