@@ -104,17 +104,7 @@ class App:
        if self.flash_count < 6:  # Numero totale di cambi colore (3 lampeggi)
         self.root.after(300, self.flash_winner)
 
-    # creo una funzione per far ripartire l'animazione
-    def reset_animation(self):
-        self.running = False
-        self.sequence = []
-        self.delays = []
-
-        # Resetto tutte le etichette al colore iniziale
-        for row in self.labels:
-            for lbl in row:
-                lbl.config(bg="#F8A305")
-
+# creo la finestra principale e inizializzo l'applicazione
 
 root = tk.Tk() # creo la finestra principale
 app = App(root) # inizializzo l'applicazione
