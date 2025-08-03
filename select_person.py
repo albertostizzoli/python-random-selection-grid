@@ -58,31 +58,35 @@ class App:
     def generate_sequence(self):
         # viene generato un numero casuale di "giri" + rallentamento
         turns = random.randint(30, 50)
-        return [i for i in range(turns)] # Restituisce una lista di indici da 0 a turns-1
+        tot_cells = ROWS * COLUMNS
+        return [random.randint(0, tot_cells - 1) for _ in range(turns)]
     
-    # creo una fuunzione per animare la selezione
+    # creo una funzione per animare la selezione
     def animate(self):
-        tot_cells = ROWS * COLUMNS # Calcolo il numero totale di celle
-        index = self.index_list % tot_cells # Calcolo l'indice corrente
-        row = index // COLUMNS # Calcolo la riga corrente
-        col = index % COLUMNS # Calcolo la colonna corrente
+        if not self.sequence:
+            self.running = False
+            return
+        index = self.sequence.pop(0)
+        row = index // COLUMNS
+        col = index % COLUMNS
 
-        # resetto i colori delle etichette
+        # Resetto il colore di tutte le etichette
         for r in self.labels:
             for lbl in r:
-                lbl.config(bg="lightblue") # colore di sfondo predefinito
+                lbl.config(bg="lightblue")
+        
+        # evidenzio l'etichetta selezionata
+        self.labels[row][col].config(bg="yellow")
 
-            # evidenzio la cella corrente
-            self.labels[row][col].config(bg="yellow") # colore di sfondo giallo per la cella corrente
-            self.index_list += 1 # Incremento l'indice per la prossima cella
-            self.delay += 15 # Rallenta progressivamente l'animazione
+        #rallento progressivamente l'animazione
+        self.delay += 15
 
-            if self.delay > 400:
-                # fermo l'animazione
-                self.labels[row][col].config(bg="green") # colore di sfondo verde per la cella finale
-                self.running = False # l'animazione si ferma
-            else:
-                self.root.after(self.delay, self.animate) # Chiamo la funzione animate dopo il ritardo specificato
+        if not self.sequence:
+            self.labels[row][col].config(bg="green")
+            self.running = False
+        else:
+            self,root.after(self.delay, self.animate) # Chiamo la funzione animate dopo il ritardo  
+
 
 root = tk.Tk() # Creo la finestra principale
 app = App(root) # Inizializzo l'applicazione
