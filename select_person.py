@@ -51,30 +51,29 @@ class App:
             return
         self.running = True
         turns = random.randint(30, 50)
-        tot_cells = ROWS * COLUMNS
-        self.sequence = [random.randint(0, tot_cells - 1) for _ in range(turns)]
+        tot_cells = ROWS * COLUMNS # Calcolo il numero totale di celle
+        self.sequence = [random.randint(0, tot_cells - 1) for _ in range(turns)] # Genera una lista di indici casuali
 
         # Ritardi crescenti da 20ms a circa 400ms
         self.delays = [int(20 + (i**1.5)) for i in range(len(self.sequence))]
 
-        self.animate()
+        self.animate() # Avvia l'animazione
 
     # creo una funzione per generare la sequenza di indici dei nomi
     def generate_sequence(self):
-        # viene generato un numero casuale di "giri" + rallentamento
-        turns = random.randint(30, 50)
-        tot_cells = ROWS * COLUMNS
-        return [random.randint(0, tot_cells - 1) for _ in range(turns)]
+        turns = random.randint(30, 50) # Numero di selezioni casuali
+        tot_cells = ROWS * COLUMNS # Calcolo il numero totale di celle
+        return [random.randint(0, tot_cells - 1) for _ in range(turns)] # Genera una lista di indici casuali
     
     # creo una funzione per animare la selezione
     def animate(self):
         if not self.sequence:
             self.running = False
             return
-        index = self.sequence.pop(0)
-        delay = self.delays.pop(0)
-        row = index // COLUMNS
-        col = index % COLUMNS
+        index = self.sequence.pop(0) # Ottengo l'indice della prossima selezione
+        delay = self.delays.pop(0) # Ottengo il ritardo per questa selezione
+        row = index // COLUMNS # Calcolo la riga dell'indice
+        col = index % COLUMNS # Calcolo la colonna dell'indice
 
         # Resetto il colore di tutte le etichette
         for r in self.labels:
@@ -84,9 +83,7 @@ class App:
         # evidenzio l'etichetta selezionata
         self.labels[row][col].config(bg="yellow")
 
-        #rallento progressivamente l'animazione
-        #self.delay += 15
-
+        # quando l'animazione termina il colore di sfondo diventa verde
         if not self.sequence:
             self.labels[row][col].config(bg="green")
             self.running = False
