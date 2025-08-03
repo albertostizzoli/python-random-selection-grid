@@ -48,11 +48,16 @@ class App:
     # creo una funzione per avviare l'animazione
     def start_animation(self):
         if self.running:
-            return # evita di eseguire più volte l'animazione
-        self.running = True # Inizio l'animazione
-        self.delay = 100 # ritardo
-        self.sequence = self.generate_sequence() # Genero la sequenza di indici dei nomi
-        self.animate() # Avvio l'animazione
+            return
+        self.running = True
+        turns = random.randint(30, 50)
+        tot_cells = ROWS * COLUMNS
+        self.sequence = [random.randint(0, tot_cells - 1) for _ in range(turns)]
+
+        # Ritardi crescenti da 20ms a circa 400ms
+        self.delays = [int(20 + (i**1.5)) for i in range(len(self.sequence))]
+
+        self.animate()
 
     # creo una funzione per generare la sequenza di indici dei nomi
     def generate_sequence(self):
@@ -67,6 +72,7 @@ class App:
             self.running = False
             return
         index = self.sequence.pop(0)
+        delay = self.delays.pop(0)
         row = index // COLUMNS
         col = index % COLUMNS
 
@@ -79,13 +85,13 @@ class App:
         self.labels[row][col].config(bg="yellow")
 
         #rallento progressivamente l'animazione
-        self.delay += 15
+        #self.delay += 15
 
         if not self.sequence:
             self.labels[row][col].config(bg="green")
             self.running = False
         else:
-            self,root.after(self.delay, self.animate) # Chiamo la funzione animate dopo il ritardo  
+            self,root.after(delay, self.animate) # Chiamo la funzione animate dopo il ritardo  
 
 
 root = tk.Tk() # Creo la finestra principale
