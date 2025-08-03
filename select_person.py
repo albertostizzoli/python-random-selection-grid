@@ -51,10 +51,15 @@ class App:
             return # evita di eseguire più volte l'animazione
         self.running = True # Inizio l'animazione
         self.delay = 100 # ritardo
-        self.sequence = self.generate_sequence() # Genero la sequenza di indici
+        self.sequence = self.generate_sequence() # Genero la sequenza di indici dei nomi
         self.animate() # Avvio l'animazione
 
-
+    # creo una funzione per generare la sequenza di indici dei nomi
+    def generate_sequence(self):
+        # viene generato un numero casuale di "giri" + rallentamento
+        turns = random.randint(30, 50)
+        return [i for i in range(turns)] # Restituisce una lista di indici da 0 a turns-1
+    
 
 
     
