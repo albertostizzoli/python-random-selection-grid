@@ -83,12 +83,24 @@ class App:
         # evidenzio l'etichetta selezionata
         self.labels[row][col].config(bg="yellow")
 
-        # quando l'animazione termina il colore di sfondo diventa verde
         if not self.sequence:
-            self.labels[row][col].config(bg="green")
-            self.running = False
+           self.running = False # termina l'animaizione
+           self.flash_count = 0 # contatore per il lampeggio
+           self.final_cell = self.labels[row][col] # cella finale selezionata
+           self.flash_winner() # evidenzio la cella vincente
         else:
-            self,root.after(delay, self.animate) # Chiamo la funzione animate dopo il ritardo  
+           self.root.after(delay, self.animate) # chiamo ricorsivamente la funzione animate per la prossima selezione
+
+    # creo una funzione per evidenziare la cella vincente
+    def flash_winner(self):
+    # Alterna il colore tra verde e bianco
+       current_bg = self.final_cell.cget("bg") # colore attuale
+       new_bg = "white" if current_bg == "green" else "green"
+       self.final_cell.config(bg=new_bg)
+
+       self.flash_count += 1 # contatore incrementato
+       if self.flash_count < 30:  # Numero totale di cambi colore (10 lampeggi)
+        self.root.after(300, self.flash_winner)
 
 
 root = tk.Tk() # Creo la finestra principale
