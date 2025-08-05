@@ -21,6 +21,8 @@ Un'applicazione desktop semplice e divertente sviluppata in **Python** con **Tki
 2. Alla pressione del pulsante `🎲 Seleziona Alunno`, viene avviata un'animazione:
    - Le celle vengono evidenziate casualmente con un ritardo progressivo.
    - Una volta fermata, la cella selezionata lampeggia tra verde e bianco per evidenziare lo "studente vincitore".
+   - Inoltre l'app permette di poter vedere il nome della persona selezionata sotto il pulsante.
+   - Se il pulsante viene cliccato più volte il nome sparisce. 
 
 ## ▶️ Come eseguirlo
 

@@ -27,9 +27,9 @@ class App:
         self.running = False # variabile per controllare se il processo è in esecuzione
         self.delay = 100  # millisecondi tra le selezioni
         
-        self.frame_grid = tk.Frame(root, bg="#E43C55")  # frame per la griglia
+        self.frame_grid = tk.Frame(root, bg="#3C52E4")  # frame per la griglia
         self.frame_grid.pack()
-        self.root.configure(bg="#E43C55")  # sfondo finestra principale
+        self.root.configure(bg="#3C52E4")  # sfondo finestra principale
 
         # ciclo per creare le etichette nelle righe della griglia
         for i in range(ROWS):
@@ -39,18 +39,22 @@ class App:
             for j in range(COLUMNS):
                 idx = i * COLUMNS + j # calcolo l'indice del nome
                 name = names[idx] if idx < len(names) else "" # ottengo il nome corrispondente
-                lbl = tk.Label(self.frame_grid, text=name, width=22, height=3, relief="solid", bg="#F8A305", font=("Arial", 12)) # creo l'etichetta
+                lbl = tk.Label(self.frame_grid, text=name, width=22, height=3, relief="solid", bg="#7FBDF7", font=("Arial", 12)) # creo l'etichetta
                 lbl.grid(row= i, column=j, padx=5, pady=5) # posiziona l'etichetta nella griglia
                 row.append(lbl) # aggiungo l'etichetta alla riga corrente
             self.labels.append(row) # aggiungo la riga alla lista delle etichette
 
-        self.btn = tk.Button(root, text="🎲 Seleziona Alunno", command=self.start_animation, width=22, height=2, bg ="yellow", font=("Arial", 12)) # pulsante per avviare
+        self.btn = tk.Button(root, text="🎲 Seleziona Alunno", command=self.start_animation, width=22, height=2, bg ="white", font=("Arial", 12)) # pulsante per avviare
         self.btn.pack(pady=20) # aggiungo il pulsante per avviare la selezione
+        self.selected_label = tk.Label(root, text="", font=("Arial", 14), bg="#3C52E4", fg="white")
+        self.selected_label.pack(pady=10)
+
 
     # creo una funzione per avviare l'animazione
     def start_animation(self):
         if self.running:
             return
+        self.selected_label.config(text="")  # Pulisce il nome selezionato precedente
         self.running = True
         turns = random.randint(30, 50)
         tot_cells = ROWS * COLUMNS # calcolo il numero totale di celle
@@ -80,29 +84,33 @@ class App:
         # resetto il colore di tutte le etichette
         for r in self.labels:
             for lbl in r:
-                lbl.config(bg="#F8A305")
+                lbl.config(bg="#7FBDF7") 
         
         # evidenzio l'etichetta selezionata
-        self.labels[row][col].config(bg="yellow")
+        self.labels[row][col].config(bg="white")
 
         if not self.sequence:
-           self.running = False # termina l'animaizione
+           self.running = False # termina l'animazione
            self.flash_count = 0 # contatore per il lampeggio
            self.final_cell = self.labels[row][col] # cella finale selezionata
+           # Mostra subito il nome selezionato
+           selected_name = self.final_cell.cget("text")
+           self.selected_label.config(text=f"🎉 Selezionato: {selected_name} 🎉")
            self.flash_winner() # evidenzio la cella vincente
         else:
            self.root.after(delay, self.animate) # chiamo ricorsivamente la funzione animate per la prossima selezione
 
     # creo una funzione per evidenziare la cella vincente
     def flash_winner(self):
-    # viene alternato un colore tra il giallo e il rosso
+    # viene alternato un colore tra il bianco e il verde
        current_bg = self.final_cell.cget("bg") # colore attuale
-       new_bg = "yellow" if current_bg == "red" else "red"
+       new_bg = "white" if current_bg == "#00ea5a" else "#00ea5a" 
        self.final_cell.config(bg=new_bg)
 
        self.flash_count += 1 # contatore incrementato
-       if self.flash_count < 6:  # Numero totale di cambi colore (3 lampeggi)
-        self.root.after(300, self.flash_winner)
+       if self.flash_count < 10:
+          self.root.after(300, self.flash_winner)
+
 
 # creo la finestra principale e inizializzo l'applicazione
 
